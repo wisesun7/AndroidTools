@@ -4,9 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
-import java.util.logging.Handler;
 
 /**
  * Created by wise on 2019/5/25.
@@ -24,10 +25,13 @@ public class isNetworkConnected implements Runnable {
 
     @Override
     public void run() {
-
+        boolean isNetworkConnected = isNetworkConnected();
+        Message msg = new Message();
+        msg.obj = isNetworkConnected;
+        mHandler.sendMessage(msg);
     }
 
-    private boolean isNetworkConnect(){
+    private boolean isNetworkConnected(){
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
 
         if (null == cm){
