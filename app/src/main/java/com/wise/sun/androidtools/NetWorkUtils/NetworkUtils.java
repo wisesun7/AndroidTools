@@ -1,6 +1,11 @@
-package com.wise.sun.androidtools.NetWorkUtils;
+package com.wise.sun.androidtools.NetworkUtils;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import com.wise.sun.androidtools.Common.Constant;
 
 /**
  * Created by wise on 2019/5/25.
@@ -17,20 +22,20 @@ public class NetworkUtils {
         return mInstance;
     }
 
-    private AsyncTask mAsyncTask = new AsyncTask() {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+    public void execute(Runnable runnable){
+        new Thread(runnable).start();
+    }
 
+    private Handler mUtilsHandler = new Handler(){
         @Override
-        protected Object doInBackground(Object[] objects) {
-            return null;
-        }
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case Constant.MSG_NETWORK_ISCONNECTED:
+                    Log.d(TAG,"isConnected");
+                    break;
+            }
 
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
         }
     };
 

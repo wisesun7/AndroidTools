@@ -1,4 +1,4 @@
-package com.wise.sun.androidtools.NetWorkUtils;
+package com.wise.sun.androidtools.NetworkUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,30 +8,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.wise.sun.androidtools.Common.Constant;
+
 
 /**
  * Created by wise on 2019/5/25.
  */
 
-public class isNetworkConnected implements Runnable {
+public class isNetworkConnected {
     private static final String TAG = "isNetworkConnected";
     private Context mContext;
     private Handler mHandler;
 
-    public isNetworkConnected(Context context, Handler handler){
+    public isNetworkConnected(Context context){
         this.mContext = context;
-        this.mHandler = handler;
     }
 
-    @Override
-    public void run() {
-        boolean isNetworkConnected = isNetworkConnected();
-        Message msg = new Message();
-        msg.obj = isNetworkConnected;
-        mHandler.sendMessage(msg);
-    }
-
-    private boolean isNetworkConnected(){
+    public boolean isNetworkConnected(){
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
 
         if (null == cm){
