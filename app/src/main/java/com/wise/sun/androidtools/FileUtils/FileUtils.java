@@ -14,7 +14,7 @@ import java.io.File;
 public class FileUtils {
     private static final String TAG = "FileUtils";
 
-    private void checkDirExsit(String dir) {
+    private static void checkDirExsit(String dir) {
         try {
             File file = new File(dir);
             if (!(file.exists() && file.isDirectory())) {
@@ -28,7 +28,7 @@ public class FileUtils {
         }
     }
 
-    public boolean delAllFile(String path) throws Exception {
+    public static boolean delAllFile(String path) throws Exception {
         boolean flag = false;
         File file = new File(path);
         if (!file.exists()) {
@@ -57,5 +57,22 @@ public class FileUtils {
             }
         }
         return true;
+    }
+
+    public static boolean deleteFile(String fileName) {
+        File file = new File(fileName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                Log.d(TAG,"delete file: " + fileName + " sucess!");
+                return true;
+            } else {
+                Log.d(TAG,"delete file: " + fileName + " failed!");
+                return false;
+            }
+        } else {
+            Log.d(TAG,"delete file: " + fileName + " is not exist!");
+            return false;
+        }
     }
 }
