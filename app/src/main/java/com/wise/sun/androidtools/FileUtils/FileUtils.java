@@ -1,9 +1,17 @@
 package com.wise.sun.androidtools.FileUtils;
 
+import android.os.Process;
+import android.support.annotation.NonNull;
 import android.util.EventLogTags;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by wise on 2019/6/19.
@@ -14,7 +22,102 @@ import java.io.File;
 public class FileUtils {
     private static final String TAG = "FileUtils";
 
-    private static void checkDirExsit(String dir) {
+    private File createFile (String dir, String name){
+        String filePath = dir + "/" + name;
+        Log.d(TAG,"dir is :" + filePath);
+        File file = new File(filePath);
+        File parent = file.getParentFile();
+        if (!parent.exists()){
+            parent.mkdir();
+        }
+        if (!file.exists()){
+            try{
+                file.createNewFile();
+                getAuthority(file.getPath());
+                Log.d(TAG,"create file success!");
+            }catch (IOException e){
+                Log.d(TAG,"create file exception , message is ;" + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+
+        }
+        if (file.exists()){
+            return file;
+        } else {
+            return null;
+        }
+    }
+
+    private void getAuthority(String path){
+        try{
+            Runtime.getRuntime().exec("chmod 777 " + path);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void write(@NonNull File file, String content){
+        if (file == null){
+            Log.e(TAG,"ERROR: file is null!");
+            return;
+        }
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try{
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            bw.write(content + "\\n");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (fw != null) {
+                    fw.close();
+                }
+                if (bw != null) {
+                    bw.close();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private ArrayList<String> read(@NonNull File file){
+        if (file == null){
+            Log.e(TAG,"ERROR: file is null!");
+            return null;
+        }
+        ArrayList<String> contents = new ArrayList<String>();
+        String content = "";
+        FileReader fr = null;
+        BufferedReader br = null;
+        try{
+            fr = new FileReader(file);
+            br = new BufferedReader(fr);
+            while ((content = br.readLine()) != null){
+                contents.add(content);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            try{
+                if (fr != null){
+                    fr.close();
+                }
+                if (br != null){
+                    br.close();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        Log.d(TAG,"contents is :" + contents.toString());
+        return contents;
+    }
+
+    private void checkDirExsit(String dir) {
         try {
             File file = new File(dir);
             if (!(file.exists() && file.isDirectory())) {
@@ -28,7 +131,7 @@ public class FileUtils {
         }
     }
 
-    public static boolean delAllFile(String path) throws Exception {
+    public boolean delAllFile(String path) throws Exception {
         boolean flag = false;
         File file = new File(path);
         if (!file.exists()) {
@@ -59,7 +162,7 @@ public class FileUtils {
         return true;
     }
 
-    public static boolean deleteFile(String fileName) {
+    public boolean deleteFile(String fileName) {
         File file = new File(fileName);
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
         if (file.exists() && file.isFile()) {

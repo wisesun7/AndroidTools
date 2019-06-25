@@ -13,6 +13,9 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Created by wise on 2019/6/19.
+ * {@link #zipFile(File, ZipOutputStream, String)}
+ * {@link #zipFiles(Collection, File)}
+ * {@link #zipFiles(Collection, File, String)}
  */
 
 public class ZipUtils {

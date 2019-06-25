@@ -13,6 +13,8 @@ import android.util.Log;
 import com.wise.sun.androidtools.Common.Constant;
 import com.wise.sun.androidtools.FileUtils.FileUtils;
 
+import java.io.Closeable;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.net.URL;
  * {@link #isNetworkConnected() 是否连接网络（网络不一定通）}
  * {@link #connectWay(Context)  网络连接方式（有线/无限）}
  * {@link #ping() ping外网，可验证是否连通}
+ * {@link #uploadData(String, byte[]) POST上传数据}
  */
 
 public class NetworkUtils {
@@ -63,6 +66,7 @@ public class NetworkUtils {
         }
         return false;
     }
+
     public String connectWay(Context context){
         ConnectivityManager mConnectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -226,5 +230,45 @@ public class NetworkUtils {
         }
 
         return testSpeed;
+    }
+
+    /**
+     * @param url : 服务器地址
+     * @param data : 上传的数据
+     * @throws IOException
+     */
+    private void uploadData(String url, byte[] data) throws IOException {
+        Log.d(TAG,"upload: " + url + ", length = " + data.length);
+        HttpURLConnection connection = null;
+        DataOutputStream out = null;
+
+        try {
+            connection = (HttpURLConnection)(new URL(url)).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setConnectTimeout(6000);
+            connection.setReadTimeout(6000);
+            connection.setRequestProperty("Content-Type", "application/octet-stream");
+            connection.connect();
+            out = new DataOutputStream(connection.getOutputStream());
+            out.write(data);
+            out.flush();
+            int responseCode = connection.getResponseCode();
+            Log.d(TAG,url + " RESPONSE " + responseCode);
+            if(responseCode != 200) {
+                throw new IOException("Response code: " + responseCode);
+            }
+        } finally {
+
+            if (out != null){
+                out.close();
+            }
+            if(connection != null) {
+                connection.disconnect();
+            }
+
+        }
+
     }
 }
