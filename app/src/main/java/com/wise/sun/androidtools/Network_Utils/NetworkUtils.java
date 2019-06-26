@@ -1,19 +1,14 @@
-package com.wise.sun.androidtools.NetworkUtils;
+package com.wise.sun.androidtools.Network_Utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.wise.sun.androidtools.Common.Constant;
 import com.wise.sun.androidtools.FileUtils.FileUtils;
 
-import java.io.Closeable;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -143,7 +138,7 @@ public class NetworkUtils {
      * @param NET_TEST_URL 远程下载路径
      * @return
      */
-    public static float checkNetSpeed(String NET_TEST_PATH , String NET_TEST_URL) {
+    public float checkNetSpeed(String NET_TEST_PATH , String NET_TEST_URL) {
         float testSpeed = 0;
         int fileLength = 0;
         long startTime = 0;
