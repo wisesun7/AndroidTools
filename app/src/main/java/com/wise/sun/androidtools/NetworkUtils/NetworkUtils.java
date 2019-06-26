@@ -1,4 +1,4 @@
-package com.wise.sun.androidtools.Network_Utils;
+package com.wise.sun.androidtools.NetworkUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
