@@ -17,11 +17,21 @@ import java.util.ArrayList;
  * Created by wise on 2019/6/19.
  * {@link #checkDirExsit(String)}
  * {@link #delAllFile(String)}
+ * {@link #createFile(String, String)}
+ * {@link #read(File)}
+ * {@link #write(File, String)}
+ * {@link #getAuthority(String)}
  */
 
 public class FileUtils {
     private static final String TAG = "FileUtils";
 
+    /**
+     * 创建新文件
+     * @param dir
+     * @param name
+     * @return
+     */
     private File createFile (String dir, String name){
         String filePath = dir + "/" + name;
         Log.d(TAG,"dir is :" + filePath);
@@ -49,6 +59,10 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 修改文件权限
+     * @param path
+     */
     private void getAuthority(String path){
         try{
             Runtime.getRuntime().exec("chmod 777 " + path);
@@ -57,6 +71,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 写入文件
+     * @param file
+     * @param content
+     */
     private void write(@NonNull File file, String content){
         if (file == null){
             Log.e(TAG,"ERROR: file is null!");
@@ -84,6 +103,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 读取文件
+     * @param file
+     * @return
+     */
     private ArrayList<String> read(@NonNull File file){
         if (file == null){
             Log.e(TAG,"ERROR: file is null!");
@@ -117,6 +141,10 @@ public class FileUtils {
         return contents;
     }
 
+    /**
+     * 判断目录是否存在
+     * @param dir
+     */
     private void checkDirExsit(String dir) {
         try {
             File file = new File(dir);
@@ -131,6 +159,12 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 删除文件/目录
+     * @param path
+     * @return
+     * @throws Exception
+     */
     public boolean delAllFile(String path) throws Exception {
         boolean flag = false;
         File file = new File(path);
@@ -162,6 +196,11 @@ public class FileUtils {
         return true;
     }
 
+    /**
+     * 删除单个文件
+     * @param fileName
+     * @return
+     */
     public static boolean deleteFile(String fileName) {
         File file = new File(fileName);
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除

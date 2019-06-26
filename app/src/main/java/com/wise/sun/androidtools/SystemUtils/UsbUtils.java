@@ -23,6 +23,12 @@ public class UsbUtils {
 
     private static final String TAG = "UsbUtil";
     private String mountState;
+
+    /**
+     * 获取USB卷的路径（会有多个，但只有一个有效）
+     * @param context
+     * @return
+     */
     private static List<String> getUsbPaths(Context context) {
         StorageManager manager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
         try {
@@ -41,6 +47,12 @@ public class UsbUtils {
         return null;
     }
 
+    /**
+     * 获取卷的挂载状态
+     * @param context
+     * @param volumePoint
+     * @return
+     */
     private static boolean getVolumeState(Context context,String volumePoint){
         StorageManager sm = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
         try {
@@ -60,6 +72,11 @@ public class UsbUtils {
         return false;
     }
 
+    /**
+     * 获取Usb实际路径
+     * @param context
+     * @return
+     */
     public static List<String> getValidUsbPaths(Context context) {
         List<String> usbpaths = new ArrayList<String>();
         List<String> result = getUsbPaths(context);
