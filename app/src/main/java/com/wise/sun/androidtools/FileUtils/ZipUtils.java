@@ -1,13 +1,20 @@
 package com.wise.sun.androidtools.FileUtils;
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -19,6 +26,7 @@ import java.util.zip.ZipOutputStream;
  */
 
 public class ZipUtils {
+    private static final String TAG = ZipUtils.class.getSimpleName();
     private static final int BUFF_SIZE = 1024 * 1024;  //1M
 
     /**
@@ -85,6 +93,83 @@ public class ZipUtils {
             in.close();
             zipout.flush();
             zipout.closeEntry();
+        }
+    }
+
+    /**
+     * 压缩字节数组
+     * @param array 字节数组
+     * @return
+     */
+    public byte[] compress(byte[] array) {
+        new ByteArrayOutputStream();
+        GZIPOutputStream zip = null;
+
+        ByteArrayOutputStream baos;
+        try {
+            baos = new ByteArrayOutputStream();
+            zip = new GZIPOutputStream(baos);
+            zip.write(array);
+            zip.flush();
+        } catch (IOException var8) {
+            throw new RuntimeException("compress error! ", var8);
+        } finally {
+            close(new Closeable[]{zip});
+        }
+
+        byte[] bytes = baos.toByteArray();
+        Log.d(TAG, "compress ok, " + array.length + " to " + bytes.length);
+        return bytes;
+    }
+
+    /**
+     * 解压字节数组
+     * @param array 字节数组
+     * @return
+     */
+    public byte[] uncompress(byte[] array) {
+        ByteArrayInputStream bais = null;
+        GZIPInputStream zip = null;
+        ByteArrayOutputStream baos = null;
+
+        try {
+            bais = new ByteArrayInputStream(array);
+            zip = new GZIPInputStream(bais);
+            baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+
+            int offset;
+            while((offset = zip.read(buffer)) != -1) {
+                baos.write(buffer, 0, offset);
+            }
+
+            byte[] bytes = baos.toByteArray();
+            Log.d(TAG, "uncompress ok, " + array.length + " to " + bytes.length);
+            byte[] var8 = bytes;
+            return var8;
+        } catch (IOException var12) {
+            throw new RuntimeException("uncompress error! ", var12);
+        } finally {
+            close(new Closeable[]{bais, zip, baos});
+        }
+    }
+
+    public static final void close(Closeable... closeables) {
+        if(closeables != null) {
+            Closeable[] var1 = closeables;
+            int var2 = closeables.length;
+
+            for(int var3 = 0; var3 < var2; ++var3) {
+                Closeable closeable = var1[var3];
+                if(closeable != null) {
+                    try {
+                        closeable.close();
+                    } catch (IOException var6) {
+                        ;
+                    }
+                }
+            }
+
         }
     }
 }

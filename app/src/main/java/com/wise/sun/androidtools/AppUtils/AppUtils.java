@@ -1,6 +1,7 @@
 package com.wise.sun.androidtools.AppUtils;
 
 import android.app.ActivityManager;
+import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -49,7 +50,6 @@ public class AppUtils {
         if (context == null || TextUtils.isEmpty(className)) {
             return false;
         }
-
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = activityManager.getRunningTasks(1);
         if (list != null && list.size() > 0) {

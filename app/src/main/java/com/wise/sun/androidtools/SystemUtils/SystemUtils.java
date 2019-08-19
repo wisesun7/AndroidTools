@@ -52,6 +52,10 @@ public class SystemUtils {
         return value;
     }
 
+    /**
+     * 获取当前可用空间
+     * @return
+     */
     public static float getAvailableSpace() {
         File file = Environment.getDataDirectory();
         StatFs sf = new StatFs(file.getPath());
@@ -62,6 +66,10 @@ public class SystemUtils {
         return (float) Math.round(space * 100) / 100;
     }
 
+    /**
+     * 获取系统占用空间
+     * @return
+     */
     public static float getSystemSpace() {
         File file = Environment.getRootDirectory();
         StatFs sf = new StatFs(file.getPath());
@@ -72,6 +80,12 @@ public class SystemUtils {
         return (float) Math.round(space * 100) / 100;
     }
 
+
+    /**
+     * 获取总空间（不包含系统占用）
+     * @param context
+     * @return
+     */
     public static long getRomTotalSize(Context context) {
         File rom = Environment.getDataDirectory();
         StatFs statFs = new StatFs(rom.getPath());
