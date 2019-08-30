@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  */
 
 public class SystemUtils {
+    private static final String TAG = "SystemUtils";
     private static volatile Method set = null;
     private static volatile Method get = null;
 
@@ -62,7 +63,7 @@ public class SystemUtils {
         long blocks = sf.getAvailableBlocksLong();
         long blockSpace = sf.getBlockSizeLong();
         float space = (blocks * blockSpace * 1.0f) / (1024 * 1024 * 1024);
-        Log.d("kxj", "getAvailableSpace: " + Math.round(space * 100) / 100);
+        Log.d(TAG, "getAvailableSpace: " + Math.round(space * 100) / 100);
         return (float) Math.round(space * 100) / 100;
     }
 
@@ -76,7 +77,7 @@ public class SystemUtils {
         long blocks = sf.getAvailableBlocksLong();
         long blockSpace = sf.getBlockSizeLong();
         float space = (blocks * blockSpace * 1.0f) / (1024 * 1024 * 1024);
-        Log.d("kxj", "getAvailableSpace: " + Math.round(space * 100) / 100);
+        Log.d(TAG, "getAvailableSpace: " + Math.round(space * 100) / 100);
         return (float) Math.round(space * 100) / 100;
     }
 
